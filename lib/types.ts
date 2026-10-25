@@ -8,7 +8,8 @@ export type AppId =
   | "chat"
   | "resume"
   | "contact"
-  | "settings";
+  | "settings"
+  | "weather";
 
 export interface AppMetadata {
   id: AppId;

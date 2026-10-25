@@ -14,8 +14,8 @@ import { BootScreen } from "./BootScreen";
 import { useSystem } from "@/lib/systemContext";
 import { AppId } from "@/lib/types";
 import { profileData } from "@/data/profile";
-import { contactData } from "@/data/contact";
-import { MapPin, Sparkles, ArrowUpRight } from "lucide-react";
+import { MapPin } from "lucide-react";
+import { WeatherWidget } from "./WeatherWidget";
 
 interface DesktopIconItem {
   id: AppId;
@@ -24,16 +24,15 @@ interface DesktopIconItem {
   position: { x: number; y: number };
 }
 
-// Exactly the 8 desktop icons requested:
-// About Me, Projects, GitHub, Skills, Resume, Terminal, Chat, Contact
+// Eight primary desktop applications; resume remains available through Finder/search.
 const DESKTOP_ICONS: DesktopIconItem[] = [
   { id: "about", label: "About Me", iconName: "User", position: { x: 24, y: 48 } },
   { id: "projects", label: "Projects", iconName: "Briefcase", position: { x: 24, y: 148 } },
   { id: "github", label: "GitHub", iconName: "GitBranch", position: { x: 24, y: 248 } },
   { id: "skills", label: "Skills", iconName: "Cpu", position: { x: 24, y: 348 } },
-  { id: "resume", label: "Resume", iconName: "FileText", position: { x: 120, y: 48 } },
+  { id: "finder", label: "Finder", iconName: "Folder", position: { x: 120, y: 48 } },
   { id: "terminal", label: "Terminal", iconName: "Terminal", position: { x: 120, y: 148 } },
-  { id: "chat", label: "Chat", iconName: "MessageSquare", position: { x: 120, y: 248 } },
+  { id: "chat", label: "AI Assistant", iconName: "MessageSquare", position: { x: 120, y: 248 } },
   { id: "contact", label: "Contact", iconName: "Mail", position: { x: 120, y: 348 } },
 ];
 
@@ -56,11 +55,6 @@ export function Desktop() {
         5000
       );
     }, 400);
-
-    // Automatically open About Me on launch
-    setTimeout(() => {
-      openWindow("about");
-    }, 600);
   };
 
   if (!mounted) return null;
@@ -123,6 +117,8 @@ export function Desktop() {
             </div>
           </div>
         </div>
+
+        <WeatherWidget />
 
         {/* Top Menu Bar */}
         <MenuBar />

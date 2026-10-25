@@ -51,10 +51,6 @@ export function DesktopIcon({ id, label, iconName, defaultPosition }: DesktopIco
     }
   };
 
-  const handleDoubleClick = () => {
-    openWindow(id);
-  };
-
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
@@ -68,8 +64,7 @@ export function DesktopIcon({ id, label, iconName, defaultPosition }: DesktopIco
       dragMomentum={false}
       initial={{ x: defaultPosition.x, y: defaultPosition.y }}
       className="absolute z-10 select-none cursor-pointer group"
-      onClick={() => setIsSelected(true)}
-      onDoubleClick={handleDoubleClick}
+      onClick={() => { setIsSelected(true); openWindow(id); }}
       onBlur={() => setIsSelected(false)}
       tabIndex={0}
       onKeyDown={handleKeyDown}

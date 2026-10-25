@@ -1,4 +1,4 @@
-# Samriddhi Sharma — Interactive OS Portfolio (Phase 2)
+# Samriddhi Sharma — Interactive OS Portfolio
 
 An interactive, personal portfolio operating system inspired by modern macOS with an original dark glass aesthetic.
 

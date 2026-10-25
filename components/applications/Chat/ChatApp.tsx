@@ -3,10 +3,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import {
   Send,
+  Trash2,
   Sparkles,
-  Bot,
   ExternalLink,
-  MessageSquare,
 } from "lucide-react";
 import {
   defaultChatContact,
@@ -25,12 +24,15 @@ export function ChatApp() {
   const [isTyping, setIsTyping] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const replyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (replyTimerRef.current) clearTimeout(replyTimerRef.current); }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
 
   const handleSendMessage = (textToSend?: string) => {
+    if (isTyping) return;
     const text = (textToSend || inputVal).trim();
     if (!text) return;
 
@@ -46,7 +48,7 @@ export function ChatApp() {
 
     setIsTyping(true);
 
-    setTimeout(() => {
+    replyTimerRef.current = setTimeout(() => {
       const botReply = getChatBotResponse(text);
       const botMsg: ChatMessage = {
         id: "bot-" + Date.now(),
@@ -71,7 +73,7 @@ export function ChatApp() {
   return (
     <div className="flex h-full bg-neutral-900/60 select-text text-white">
       {/* Left Sidebar */}
-      <aside className="w-56 bg-neutral-950/40 border-r border-white/10 p-3 flex flex-col justify-between shrink-0 select-none">
+      <aside className="hidden sm:flex w-56 bg-neutral-950/40 border-r border-white/10 p-3 flex-col justify-between shrink-0 select-none">
         <div>
           <div className="text-[10px] font-semibold uppercase tracking-wider text-white/40 mb-2 px-2">
             Conversations
@@ -107,9 +109,10 @@ export function ChatApp() {
           <div className="flex items-center space-x-2.5">
             <div className="text-xs font-bold text-white">{defaultChatContact.name}</div>
             <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-medium">
-              {defaultChatContact.role}
+              ● Online
             </span>
           </div>
+          <button onClick={() => { if (replyTimerRef.current) clearTimeout(replyTimerRef.current); setMessages(initialMessages); setIsTyping(false); setInputVal(""); }} aria-label="Clear conversation" title="Clear conversation" className="rounded-md p-1.5 text-white/50 hover:bg-white/10 hover:text-white"><Trash2 className="h-3.5 w-3.5" /></button>
         </div>
 
         {/* Quick Questions Chips */}
@@ -186,7 +189,7 @@ export function ChatApp() {
               value={inputVal}
               onChange={(e) => setInputVal(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Ask about Samriddhi's education, skills, achievements..."
+              placeholder="Ask about Samriddhi…"
               className="flex-1 bg-transparent text-xs text-white placeholder-white/40 focus:outline-none"
             />
             <button

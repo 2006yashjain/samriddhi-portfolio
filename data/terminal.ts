@@ -1,6 +1,7 @@
 import { profileData } from "./profile";
 import { contactData } from "./contact";
 import { skillGroups } from "./skills";
+import { projectsData } from "./projects";
 
 export interface TerminalOutputLine {
   type: "text" | "error" | "success" | "info" | "ascii";
@@ -35,7 +36,8 @@ export const terminalCommands: Record<string, TerminalCommand> = {
       { type: "text", content: "  github        — Display GitHub profile link" },
       { type: "text", content: "  linkedin      — Display LinkedIn profile link" },
       { type: "text", content: "  contact       — Display direct contact channels" },
-      { type: "text", content: "  projects      — Check project repository status" },
+      { type: "text", content: "  projects      — List project repositories" },
+      { type: "text", content: "  weather       — Open Jaipur weather" },
       { type: "text", content: "  neofetch      — Display system specs & OS banner" },
       { type: "text", content: "  open <app>    — Open GUI app (e.g., open skills, open contact)" },
       { type: "text", content: "  date          — Print current system date and time" },
@@ -102,7 +104,7 @@ export const terminalCommands: Record<string, TerminalCommand> = {
     execute: () => [
       { type: "info", content: "=== GitHub Profile ===" },
       { type: "success", content: contactData.github },
-      { type: "text", content: "Actual repository links will be integrated in the next phase." }
+      ...projectsData.map((project) => ({ type: "text" as const, content: `${project.name}: ${project.githubUrl}` }))
     ]
   },
 
@@ -134,8 +136,7 @@ export const terminalCommands: Record<string, TerminalCommand> = {
     description: "Check projects status",
     execute: () => [
       { type: "info", content: "=== Projects ===" },
-      { type: "text", content: "No projects loaded yet. GitHub repositories will appear here." },
-      { type: "text", content: `GitHub: ${contactData.github}` },
+      ...projectsData.map((project) => ({ type: "text" as const, content: `📁 ${project.name} (${project.language}) — ${project.githubUrl}` })),
       { type: "info", content: "\nRun 'open projects' to open the visual Projects window." }
     ]
   },
@@ -188,7 +189,8 @@ export const terminalCommands: Record<string, TerminalCommand> = {
         "chat",
         "resume",
         "contact",
-        "settings"
+        "settings",
+        "weather"
       ];
       if (!app || !validApps.includes(app)) {
         return [
@@ -202,6 +204,10 @@ export const terminalCommands: Record<string, TerminalCommand> = {
       }
       return [{ type: "text", content: `Requested to open ${app}.app` }];
     }
+  },
+
+  weather: {
+    name: "weather", description: "Open Jaipur weather", execute: (_args, context) => { context?.openApp?.("weather"); return [{ type: "success", content: "Opening Jaipur weather…" }]; }
   },
 
   clear: {

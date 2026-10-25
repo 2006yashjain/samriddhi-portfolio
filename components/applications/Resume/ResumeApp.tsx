@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import {
-  Download,
   Printer,
   ZoomIn,
   ZoomOut,
@@ -10,25 +9,14 @@ import {
   Mail,
   MapPin,
   Phone,
-  Award,
-  ExternalLink,
-  AlertCircle,
 } from "lucide-react";
 import { profileData } from "@/data/profile";
+import { projectsData } from "@/data/projects";
 import { contactData } from "@/data/contact";
 import { skillGroups } from "@/data/skills";
-import { useSystem } from "@/lib/systemContext";
 
 export function ResumeApp() {
-  const { addNotification } = useSystem();
   const [zoomLevel, setZoomLevel] = useState<number>(100);
-
-  const handleDownload = () => {
-    addNotification(
-      "Resume Status",
-      "Resume document not uploaded yet. The portfolio content is available through the other applications."
-    );
-  };
 
   const handlePrint = () => {
     window.print();
@@ -77,26 +65,11 @@ export function ResumeApp() {
             <Printer className="w-3.5 h-3.5" />
           </button>
 
-          <button
-            onClick={handleDownload}
-            className="px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold flex items-center space-x-1.5 transition-colors shadow-sm"
-          >
-            <Download className="w-3.5 h-3.5" />
-            <span>Download PDF</span>
-          </button>
         </div>
       </div>
 
       {/* Main Document Viewer Canvas */}
       <div className="flex-1 overflow-auto p-6 flex flex-col items-center bg-neutral-950/40">
-        {/* Notice Banner */}
-        <div className="w-full max-w-2xl mb-4 p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center space-x-3 text-amber-200 text-xs">
-          <AlertCircle className="w-4 h-4 text-amber-400 shrink-0" />
-          <p>
-            Resume document not uploaded yet. The portfolio content is available through the other applications.
-          </p>
-        </div>
-
         {/* Structured Resume Sheet */}
         <div
           style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: "top center" }}
@@ -123,7 +96,7 @@ export function ResumeApp() {
                 <Phone className="w-3 h-3 text-neutral-500" />
                 <span>{contactData.phone}</span>
               </span>
-              <span>github.com/sharmasamriddhi05-blip</span>
+              <a href={contactData.github} target="_blank" rel="noreferrer" className="text-blue-700 underline">GitHub</a>
             </div>
           </header>
 
@@ -144,6 +117,15 @@ export function ResumeApp() {
             ))}
           </section>
 
+          <section className="mb-5">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-neutral-800 border-b border-neutral-200 pb-1 mb-2.5">Skills</h2>
+            <div className="space-y-1 text-xs text-neutral-700">{skillGroups.map((group) => <p key={group.category}><strong>{group.category}:</strong> {group.skills.join(", ")}</p>)}</div>
+          </section>
+          <section className="mb-5">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-neutral-800 border-b border-neutral-200 pb-1 mb-2.5">Projects</h2>
+            <ul className="space-y-1.5 text-xs text-neutral-800">{projectsData.map((project) => <li key={project.id}><strong>{project.name}</strong> — {project.language}</li>)}</ul>
+          </section>
+
           {/* Academic & Competitive Achievements */}
           <section className="mb-5">
             <h2 className="text-xs font-bold uppercase tracking-wider text-neutral-800 border-b border-neutral-200 pb-1 mb-2.5">
@@ -159,30 +141,6 @@ export function ResumeApp() {
                 </li>
               ))}
             </ul>
-          </section>
-
-          {/* Technical Skills */}
-          <section className="mb-5">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-neutral-800 border-b border-neutral-200 pb-1 mb-2.5">
-              Skills
-            </h2>
-            <div className="text-xs text-neutral-800 space-y-1.5">
-              {skillGroups.map((group) => (
-                <div key={group.category}>
-                  <strong>{group.category}:</strong> {group.skills.join(", ")}
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Projects Section */}
-          <section className="mb-5">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-neutral-800 border-b border-neutral-200 pb-1 mb-2">
-              Projects
-            </h2>
-            <p className="text-xs text-neutral-600 italic">
-              Project repositories will be connected from GitHub (github.com/sharmasamriddhi05-blip).
-            </p>
           </section>
 
           {/* Interests */}

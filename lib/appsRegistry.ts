@@ -53,7 +53,7 @@ export const APPS_REGISTRY: Record<AppId, AppMetadata> = {
   },
   chat: {
     id: "chat",
-    title: "Chat",
+    title: "AI Assistant",
     iconName: "MessageSquare",
     defaultWidth: 720,
     defaultHeight: 520,
@@ -90,6 +90,9 @@ export const APPS_REGISTRY: Record<AppId, AppMetadata> = {
     minWidth: 640,
     minHeight: 400,
     canResize: true,
+  },
+  weather: {
+    id: "weather", title: "Weather", iconName: "CloudSun", defaultWidth: 560, defaultHeight: 620, minWidth: 360, minHeight: 420, canResize: true,
   },
   settings: {
     id: "settings",

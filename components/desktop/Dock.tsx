@@ -11,7 +11,7 @@ import {
   MessageSquare,
   FileText,
   Mail,
-  Settings,
+  CloudSun,
 } from "lucide-react";
 import { useSystem } from "@/lib/systemContext";
 import { AppId } from "@/lib/types";
@@ -49,12 +49,6 @@ const DOCK_ITEMS: DockItemDef[] = [
     gradient: "from-slate-700 to-neutral-900",
   },
   {
-    id: "resume",
-    title: "Resume",
-    icon: FileText,
-    gradient: "from-amber-500 to-orange-500",
-  },
-  {
     id: "terminal",
     title: "Terminal",
     icon: Terminal,
@@ -62,7 +56,7 @@ const DOCK_ITEMS: DockItemDef[] = [
   },
   {
     id: "chat",
-    title: "Chat",
+    title: "AI Assistant",
     icon: MessageSquare,
     gradient: "from-emerald-500 to-teal-600",
   },
@@ -78,12 +72,7 @@ const DOCK_ITEMS: DockItemDef[] = [
     icon: Folder,
     gradient: "from-blue-500 to-cyan-400",
   },
-  {
-    id: "settings",
-    title: "Settings",
-    icon: Settings,
-    gradient: "from-gray-500 to-zinc-600",
-  },
+  { id: "weather", title: "Weather", icon: CloudSun, gradient: "from-sky-500 to-blue-600" },
 ];
 
 export function Dock() {

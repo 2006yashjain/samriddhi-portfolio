@@ -19,6 +19,7 @@ import {
   Award,
   Phone,
   ExternalLink,
+  CloudSun,
 } from "lucide-react";
 import { useSystem } from "@/lib/systemContext";
 import { searchSystem, SearchResult, getSearchIndex } from "@/data/search";
@@ -87,6 +88,8 @@ export function SpotlightSearch() {
         return <Mail className="w-4 h-4 text-sky-400" />;
       case "phone":
         return <Phone className="w-4 h-4 text-emerald-400" />;
+      case "cloud-sun":
+        return <CloudSun className="w-4 h-4 text-sky-400" />;
       case "settings":
         return <Settings className="w-4 h-4 text-zinc-400" />;
       case "code":

@@ -1,6 +1,7 @@
 import { profileData } from "./profile";
 import { contactData } from "./contact";
 import { skillGroups } from "./skills";
+import { projectsData } from "./projects";
 
 export type FileType = "folder" | "pdf" | "code" | "markdown" | "image" | "app";
 
@@ -126,7 +127,7 @@ export const initialFinderItems: FinderItem[] = [
     size: "0.5 KB",
     dateModified: "Today, 10:00 AM",
     parentId: "folder-projects",
-    content: `GitHub repositories will appear here once connected.\nVisit: ${contactData.github}`
+    content: projectsData.map((project) => `${project.name}\n${project.description ?? ""}\n${project.githubUrl}`).join("\n\n") + `\n\nGitHub: ${contactData.github}`
   },
 
   // Inside Resume folder
@@ -146,7 +147,7 @@ export const initialFinderItems: FinderItem[] = [
     size: "0.6 KB",
     dateModified: "Today, 10:00 AM",
     parentId: "folder-resume",
-    content: "Resume document not uploaded yet. The portfolio content is available through the other applications."
+    content: "Resume overview is available in the Resume application. No downloadable resume file is provided."
   },
 
   // Inside Contact folder

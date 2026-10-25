@@ -1,11 +1,12 @@
 import { profileData } from "./profile";
 import { contactData } from "./contact";
 import { skillGroups } from "./skills";
+import { projectsData } from "./projects";
 import { AppId } from "@/lib/types";
 
 export interface SearchResult {
   id: string;
-  category: "Applications" | "Skills" | "Achievements" | "Education" | "Contact";
+  category: "Applications" | "Skills" | "Achievements" | "Education" | "Contact" | "Projects" | "Weather";
   title: string;
   subtitle: string;
   icon: string;
@@ -24,7 +25,8 @@ export function getSearchIndex(): SearchResult[] {
     { id: "github", title: "GitHub", subtitle: "Profile @sharmasamriddhi05-blip", icon: "git-branch" },
     { id: "resume", title: "Resume", subtitle: "Academic & Technical Overview", icon: "file-text" },
     { id: "terminal", title: "Terminal", subtitle: "Interactive Zsh Terminal", icon: "terminal" },
-    { id: "chat", title: "Chat", subtitle: "Ask questions about Samriddhi", icon: "message-square" },
+    { id: "chat", title: "AI Assistant", subtitle: "Ask questions about Samriddhi", icon: "message-square" },
+    { id: "weather", title: "Weather", subtitle: "Current conditions and forecast for Jaipur", icon: "cloud-sun" },
     { id: "contact", title: "Contact", subtitle: "Email, Phone, LinkedIn, GitHub", icon: "mail" },
     { id: "finder", title: "Finder", subtitle: "File & Directory Browser", icon: "folder" },
     { id: "settings", title: "Settings", subtitle: "Wallpapers & Appearance", icon: "settings" }
@@ -56,6 +58,12 @@ export function getSearchIndex(): SearchResult[] {
     });
   });
 
+  projectsData.forEach((project) => {
+    index.push({ id: `project-${project.id}`, category: "Projects", title: project.name, subtitle: `${project.language} • ${project.description ?? "GitHub repository"}`, icon: "folder", appId: "projects", customData: { projectId: project.id } });
+  });
+
+  index.push({ id: "github-profile", category: "Applications", title: "Samriddhi on GitHub", subtitle: contactData.github, icon: "git-branch", appId: "github" });
+
   // Achievements
   profileData.achievements.forEach((ach, idx) => {
     index.push({
@@ -79,6 +87,10 @@ export function getSearchIndex(): SearchResult[] {
     appId: "about",
     customData: { tab: "education" }
   });
+
+  index.push({ id: "about-bio", category: "Applications", title: "About Samriddhi", subtitle: profileData.bio.join(" "), icon: "user", appId: "about" });
+  index.push({ id: "focus-areas", category: "Skills", title: "Current Focus", subtitle: profileData.focusAreas.join(" • "), icon: "cpu", appId: "about" });
+  index.push({ id: "location-jaipur", category: "Contact", title: "Jaipur, Rajasthan, India", subtitle: "Location", icon: "external-link", appId: "contact" });
 
   // Contact links
   index.push({

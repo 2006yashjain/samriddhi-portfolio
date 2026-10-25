@@ -16,6 +16,7 @@ import {
   Search,
   Wifi,
   BatteryCharging,
+  CloudSun,
 } from "lucide-react";
 import { AppId } from "@/lib/types";
 import { APPS_REGISTRY } from "@/lib/appsRegistry";
@@ -29,6 +30,7 @@ import { ChatApp } from "../applications/Chat/ChatApp";
 import { ResumeApp } from "../applications/Resume/ResumeApp";
 import { ContactApp } from "../applications/Contact/ContactApp";
 import { SettingsApp } from "../applications/Settings/SettingsApp";
+import { WeatherApp } from "../desktop/WeatherWidget";
 import { SpotlightSearch } from "../desktop/SpotlightSearch";
 import { useSystem } from "@/lib/systemContext";
 import { profileData } from "@/data/profile";
@@ -61,7 +63,8 @@ export function MobileOS() {
     { id: "github", name: "GitHub", icon: GitBranch, gradient: "from-slate-700 to-neutral-900" },
     { id: "resume", name: "Resume", icon: FileText, gradient: "from-amber-600 to-orange-500" },
     { id: "terminal", name: "Terminal", icon: Terminal, gradient: "from-neutral-800 to-zinc-950" },
-    { id: "chat", name: "Chat", icon: MessageSquare, gradient: "from-emerald-600 to-teal-500" },
+    { id: "chat", name: "AI Assistant", icon: MessageSquare, gradient: "from-emerald-600 to-teal-500" },
+    { id: "weather", name: "Weather", icon: CloudSun, gradient: "from-sky-500 to-blue-600" },
     { id: "contact", name: "Contact", icon: Mail, gradient: "from-sky-600 to-blue-700" },
     { id: "finder", name: "Finder", icon: Folder, gradient: "from-blue-500 to-indigo-600" },
     { id: "settings", name: "Settings", icon: Settings, gradient: "from-zinc-600 to-neutral-700" },
@@ -89,6 +92,8 @@ export function MobileOS() {
         return <ContactApp />;
       case "settings":
         return <SettingsApp />;
+      case "weather":
+        return <WeatherApp />;
       default:
         return null;
     }

@@ -1,5 +1,6 @@
 import { profileData } from "./profile";
 import { contactData } from "./contact";
+import { projectsData } from "./projects";
 import { skillGroups } from "./skills";
 
 export interface ChatMessage {
@@ -23,12 +24,12 @@ export interface ChatContact {
   statusText: string;
 }
 
-// Configurable chatbot identity: currently neutral placeholder per instructions
+// Portfolio-only assistant identity
 export const defaultChatContact: ChatContact = {
   id: "assistant",
-  name: "Portfolio Assistant",
-  role: "Samriddhi's Portfolio Guide",
-  avatarText: "PA",
+  name: "Samriddhi AI",
+  role: "Portfolio Assistant",
+  avatarText: "SAI",
   isOnline: true,
   statusText: "Ready to assist"
 };
@@ -40,7 +41,9 @@ export const quickQuestions: string[] = [
   "What are Samriddhi's achievements?",
   "What is her GitHub?",
   "How can I contact Samriddhi?",
-  "What is she currently learning?"
+  "What is she currently focusing on?",
+  "Show me her projects.",
+  "Where is she located?"
 ];
 
 export const initialMessages: ChatMessage[] = [
@@ -66,7 +69,7 @@ export function getChatBotResponse(query: string): {
     q.includes("samriddhi") && (q.includes("tell") || q.includes("who") || q.length < 15)
   ) {
     return {
-      text: "Samriddhi Sharma is a second-year BTech student in Computer Science and Engineering at JECRC University, Jaipur. She is passionate about building creative solutions, learning new technologies, and growing as a software engineer.",
+      text: `${profileData.bio.join(" ")} ${profileData.education[0]?.institution}.`,
       action: { type: "open_app", appId: "about", label: "Open About Me" }
     };
   }
@@ -96,7 +99,7 @@ export function getChatBotResponse(query: string): {
     q.includes("stack")
   ) {
     return {
-      text: "Samriddhi's technical skills include Programming Languages (C, C++, Python), Web Development (HTML, CSS, JavaScript), Tools & Technologies (Git, GitHub, VS Code, MySQL), and Soft Skills (Communication, Teamwork, Problem-Solving).",
+      text: `Samriddhi's skills include ${skillGroups.map((group) => `${group.category}: ${group.skills.join(", ")}`).join("; ")}.`,
       action: { type: "open_app", appId: "skills", label: "Open Skills App" }
     };
   }
@@ -129,6 +132,11 @@ export function getChatBotResponse(query: string): {
       text: "Samriddhi's verified achievements include: 92 percentile in JEE Mains, 95% in Class 10, 95% in Class 12, and Recommended twice in CDS.",
       action: { type: "open_app", appId: "about", label: "View Achievements" }
     };
+  }
+
+  // Project listing
+  if (q.includes("project") || q.includes("repository") || q.includes("repositories")) {
+    return { text: `Samriddhi's projects include: ${projectsData.map((project) => `${project.name} (${project.language})`).join("; ")}.`, action: { type: "open_app", appId: "projects", label: "View Projects" } };
   }
 
   // GitHub / code / repos
@@ -168,6 +176,8 @@ export function getChatBotResponse(query: string): {
     };
   }
 
+  if (q.includes("location") || q.includes("where is she") || q.includes("where does she live")) return { text: `Samriddhi is based in ${contactData.location}.` };
+
   // Interests / hobbies
   if (
     q.includes("interest") ||
@@ -177,16 +187,8 @@ export function getChatBotResponse(query: string): {
     q.includes("reading")
   ) {
     return {
-      text: "In her free time, Samriddhi enjoys coding, exploring new ideas, reading, and spending time in nature.",
+      text: `Samriddhi enjoys ${profileData.interests.join(", ")}.`,
       action: { type: "open_app", appId: "about", label: "View Interests" }
-    };
-  }
-
-  // Projects
-  if (q.includes("project")) {
-    return {
-      text: "Project repositories will be connected soon from Samriddhi's GitHub profile. You can visit her GitHub at " + contactData.github,
-      action: { type: "open_app", appId: "projects", label: "View Projects App" }
     };
   }
 

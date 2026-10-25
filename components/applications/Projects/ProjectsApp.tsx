@@ -1,59 +1,13 @@
 "use client";
 
-import React from "react";
-import { FolderGit2, ExternalLink, Github, Sparkles } from "lucide-react";
-import { projectsData } from "@/data/projects";
-import { contactData } from "@/data/contact";
+import React, { useState } from "react";
+import { ArrowLeft, ExternalLink, FolderGit2, Github } from "lucide-react";
+import { projectsData, Project } from "@/data/projects";
 
 export function ProjectsApp() {
-  return (
-    <div className="flex flex-col h-full bg-neutral-900/60 select-text text-white">
-      {/* Top Header */}
-      <div className="h-12 px-4 border-b border-white/10 flex items-center justify-between bg-neutral-950/40 shrink-0">
-        <div className="flex items-center space-x-2">
-          <FolderGit2 className="w-4 h-4 text-blue-400" />
-          <h2 className="text-xs font-bold text-white">Projects</h2>
-        </div>
-        <span className="text-[10px] text-white/40 font-mono">
-          Phase 2 • Ready for GitHub Integration
-        </span>
-      </div>
-
-      {/* Main Content Area */}
-      <div className="flex-1 overflow-y-auto p-6 flex items-center justify-center">
-        {projectsData.length === 0 ? (
-          /* Clean empty state as required */
-          <div className="max-w-md text-center p-8 rounded-2xl bg-white/[0.03] border border-white/10 space-y-4">
-            <div className="w-16 h-16 rounded-2xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 mx-auto">
-              <FolderGit2 className="w-8 h-8 stroke-[1.5]" />
-            </div>
-
-            <div className="space-y-1.5">
-              <h3 className="text-base font-bold text-white">Projects</h3>
-              <p className="text-xs text-white/70 leading-relaxed">
-                No projects loaded yet. GitHub repositories will appear here.
-              </p>
-            </div>
-
-            <div className="pt-2">
-              <a
-                href={contactData.github}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center space-x-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-medium text-white transition-colors"
-              >
-                <Github className="w-4 h-4" />
-                <span>Visit GitHub Profile</span>
-                <ExternalLink className="w-3.5 h-3.5 text-white/50" />
-              </a>
-            </div>
-          </div>
-        ) : (
-          <div className="w-full">
-            {/* If projects exist */}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+  const [selected, setSelected] = useState<Project | null>(null);
+  return <div className="flex h-full flex-col bg-neutral-900/70 text-white">
+    <div className="flex h-12 shrink-0 items-center justify-between border-b border-white/10 bg-neutral-950/40 px-4"><div className="flex items-center gap-2"><FolderGit2 className="h-4 w-4 text-blue-400"/><h2 className="text-xs font-bold">Projects</h2></div><span className="text-[10px] text-white/40">{projectsData.length} repositories</span></div>
+    {selected ? <div className="flex-1 overflow-y-auto p-5 sm:p-7"><button onClick={() => setSelected(null)} className="mb-5 inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs text-blue-300 hover:bg-white/5"><ArrowLeft size={15}/> Back to projects</button><h2 className="text-xl font-semibold">{selected.name}</h2>{selected.description && <section className="mt-5"><h3 className="text-[11px] font-semibold uppercase tracking-wide text-white/50">Overview</h3><p className="mt-2 text-sm leading-6 text-white/80">{selected.description}</p></section>}{selected.features?.length ? <section className="mt-5"><h3 className="text-[11px] font-semibold uppercase tracking-wide text-white/50">Features</h3><ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-6 text-white/80">{selected.features.map((x) => <li key={x}>{x}</li>)}</ul></section> : null}<section className="mt-5"><h3 className="text-[11px] font-semibold uppercase tracking-wide text-white/50">Technologies</h3><div className="mt-2 flex flex-wrap gap-2">{selected.technologies.map((x) => <span key={x} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs">{x}</span>)}</div></section><div className="mt-6 flex gap-2"><a href={selected.githubUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-lg bg-white/10 px-4 py-2.5 text-xs hover:bg-white/15"><Github size={14}/> Repository <ExternalLink size={13}/></a>{selected.liveUrl && <a href={selected.liveUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-xs hover:bg-blue-500">Live Demo <ExternalLink size={13}/></a>}</div></div> : <div className="flex-1 overflow-y-auto p-4 sm:p-5"><div className="grid gap-3 sm:grid-cols-2">{projectsData.map((project) => <button key={project.id} onClick={() => setSelected(project)} className="rounded-xl border border-white/10 bg-white/[0.035] p-4 text-left transition hover:border-white/20 hover:bg-white/[0.07]"><div className="flex items-start justify-between gap-3"><div className="flex items-start gap-3"><FolderGit2 className="mt-0.5 h-5 w-5 shrink-0 text-blue-300"/><div><h3 className="text-sm font-semibold">{project.name}</h3><p className="mt-1 text-xs leading-5 text-white/55">{project.description}</p></div></div><span className="text-xs text-white/40">→</span></div><div className="mt-3 flex flex-wrap gap-1.5">{project.technologies.map((tech) => <span key={tech} className="rounded-full bg-white/[0.07] px-2 py-1 text-[10px] text-white/65">{tech}</span>)}</div></button>)}</div></div>}
+  </div>;
 }

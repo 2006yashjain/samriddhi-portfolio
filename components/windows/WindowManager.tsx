@@ -14,6 +14,7 @@ import { ChatApp } from "../applications/Chat/ChatApp";
 import { ResumeApp } from "../applications/Resume/ResumeApp";
 import { ContactApp } from "../applications/Contact/ContactApp";
 import { SettingsApp } from "../applications/Settings/SettingsApp";
+import { WeatherApp } from "../desktop/WeatherWidget";
 
 export function WindowManager() {
   const { windows } = useSystem();
@@ -40,6 +41,8 @@ export function WindowManager() {
         return <ContactApp />;
       case "settings":
         return <SettingsApp />;
+      case "weather":
+        return <WeatherApp />;
       default:
         return (
           <div className="p-6 text-center text-white/50">
